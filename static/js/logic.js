@@ -1,5 +1,12 @@
 //https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson
 
+var myMap = L.map("mapid", {
+  center: [34.05, -118.24],
+  zoom: 12,
+});
+
+// Create a layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
+
 
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
@@ -9,27 +16,74 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{
   maxZoom: 18,
   id: "light-v10",
   accessToken: API_KEY
-});
-
-// Create a baseMaps object to hold the lightmap layer
+})
+//Create a baseMaps object to hold the lightmap layer
 var baseMaps = {
   "Light Map": lightmap
 };
 
+// var overlayMaps = {
+//   "Earthquakes": earthquakes
+// };
+
+L.control.layers(baseMaps,  {
+  //collapsed: false
+}).addTo(myMap);
+
+
+
+
+function createMarkers(response) {
+
+  // Pull the "stations" property off of response.data
+  var features = response.features;
+  console.log(features);
+  
+  var earthquakes = [];
+  for (var index = 0; index <features.length; index++) {
+        var features = features[index];
+        var earthquakes=L.marker([features.geometry.coordinates[0], features.geometry.coordinates[1]])
+        .bindPopup ("<h3>" + features.geometry.coordinates + "</h3>");
+        console.log(earthquakes);
+       //earthquakes.push(earthquake);
+  }
+  //createMap(L.layerGroup(earthquakes));
+
+}
+
+ // Initialize an array to hold earthquakes
+//   var bikeMarkers = [];
+
+//   // Loop through the stations array
+//   for (var index = 0; index < stations.length; index++) {
+//     var station = stations[index];
+
+//     // For each station, create a marker and bind a popup with the station's name
+//     var bikeMarker = L.marker([station.lat, station.lon])
+//       .bindPopup("<h3>" + station.name + "<h3><h3>Capacity: " + station.capacity + "</h3>");
+
+//     // Add the marker to the bikeMarkers array
+//     bikeMarkers.push(bikeMarker);
+//   }
+
+//   // Create a layer group made from the bike markers array, pass it into the createMap function
+//   createMap(L.layerGroup(bikeMarkers));
+// }
+
+
+// Perform an API call to the Citi Bike API to get station information. Call createMarkers when complete
+d3.json(queryUrl, createMarkers);
+
+
+
+// L.control.layers(baseMaps).addTo(myMap);
 // // Create an overlayMaps object to hold the bikeStations layer
 // var overlayMaps = {
 //   "Earthquakes": earthquakes
 // };
 
 // Create the map object with options
-var myMap = L.map("mapid", {
-  center: [39.74, -104.99],
-  zoom: 12,
-  layers: [lightmap]
-});
 
-// Create a layer control, pass in the baseMaps and overlayMaps. Add the layer control to the map
-L.control.layers(baseMaps).addTo(myMap);
 
 
 
@@ -98,4 +152,4 @@ L.control.layers(baseMaps).addTo(myMap);
 //   L.control.layers(baseMaps, overlayMaps, {
 //     collapsed: false
 //   }).addTo(myMap);
-// }
+// 
