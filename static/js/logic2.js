@@ -1,5 +1,13 @@
 
-
+// var mymap = L.map("mapid").setView([51.105, -0.09], 13)
+// L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+//     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+//     maxZoom: 18,
+//     id: 'mapbox/streets-v11',
+//     tileSize: 512,
+//     zoomOffset: -1,
+//     accessToken: API_KEY
+// }).addTo(mymap);
 var map = L.map("mapid", {
   center: [34.05, -118.24],
   zoom: 12,
@@ -13,28 +21,38 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{
   accessToken: API_KEY
 }).addTo(map);
 
+var url_query = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson"
+d3.json(url_query, function(data){
+  function styleInfo(feature) {
+    return {
+      opacity: 1,
+      fillOpacity: 1,
+      fillColor:"blue",
+      color: "#000000",
+      radius: getRadius(feature.properties.mag),
+      stroke: true,
+      weight: 0.5
+    };
+  }
 
-d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson", function(data){
-  
+  function getRadius(magnitude) {
+    if(magnitude === 0) {
+      return 1;
+    }
+    return magnitude * 4;
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  L.geoJson(data, {
+    pointToLayer: function(feature, latlng) {
+      return L.circleMarker(latlng);
+    },
+    style: styleInfo,
+    onEachFeature: function(feature, layer) {
+      layer.bindPopup(
+        "Magnitude: " + feature.properties.mag + "<br>Depth: " + feature.geometry.coordinates[2]
+      );
+    }
+  }).addTo(map)
 
   // // Pull the "stations" property off of response.data
   // var features = response.features;
