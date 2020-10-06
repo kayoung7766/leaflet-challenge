@@ -149,7 +149,7 @@ d3.json(queryUrl, createMarkers);
   // Create a layer control
   // Pass in our baseMaps and overlayMaps
   // Add the layer control to the map
-//   L.control.layers(baseMaps, overlayMaps, {
-//     collapsed: false
-//   }).addTo(myMap);
+  L.control.layers(baseMaps, overlayMaps, {
+    collapsed: false
+  }).addTo(myMap);
 // 
