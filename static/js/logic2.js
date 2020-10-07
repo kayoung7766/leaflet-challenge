@@ -61,15 +61,17 @@ d3.json(url_query, function(data){
       return "#B9F09A";
   }
 
-  // function getColor(magnitude) {
-  //   return d > 5000000 , 
-  //   d > 200000? ‘#BD0026’ :
-  //   d > 90 ‘#E31A1C’ :
-  //   d > 70 ‘#FC4E2A’ :
-  //   d > 50  ‘#FD8D3C’ :
-  //   d > 30  ‘#FEB24C’ :
-  //   d > 10  ‘#FED976’ :
-  //   ‘#FFEDA0’;
-  //   }
+  var info = L.control({
+    position: "bottomright"
+  });
+  
+  // When the layer control is added, insert a div with the class of "legend"
+  info.onAdd = function() {
+    var div = L.DomUtil.create("div", "legend");
+    return div;
+  };
+  // Add the info legend to the map
+  info.addTo(map);
+  
   
 });
