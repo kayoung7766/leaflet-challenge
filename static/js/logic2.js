@@ -45,19 +45,21 @@ d3.json(url_query, function(data){
   }).addTo(map)
 
   function getColor(d) {
-    if (d > 90)
+    switch (true){
+    case d > 90:
       return "#EE3416";
-    if (d >70 )
+      case d > 70:
       return "#E14A1E";
-      if (d >50 )
+      case d > 50:
       return "#E16E1E";
-      if (d >30 )
+      case d > 30:
       return "#FFC300";
-      if (d >10 )
+      case d > 10:
       return "#B2E11E";
-      if (d> -10)
+      default:
       return "#B9F09A";
   }
+}
 
   var info = L.control({
     position: "bottomright"
