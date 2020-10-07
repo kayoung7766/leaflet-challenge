@@ -1,5 +1,3 @@
-
-
 var map = L.map("mapid", {
   center: [37.09, -95.71],
   zoom: 3,
@@ -64,12 +62,20 @@ d3.json(url_query, function(data){
   var info = L.control({
     position: "bottomright"
   });
-  
   // When the layer control is added, insert a div with the class of "legend"
   info.onAdd = function() {
     var div = L.DomUtil.create("div", "legend");
+    labels = ['<strong>Categories</strong>'],
+    categories = ['-10-10','10-30','30-50','50-70','70-90', '90+'];
+    for (var i = 0; i < categories.length; i++) {
+            div.innerHTML += 
+            labels.push(
+                '<i class="circle" style="background:' + getColor(categories[i] + 1) + '"></i> ' +
+                (categories[i] ? categories[i] : '+'));
+        }
+        div.innerHTML = labels.join('<br>');
     return div;
-  };
+};
   // Add the info legend to the map
   info.addTo(map);
   
