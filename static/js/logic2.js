@@ -9,8 +9,8 @@
 //     accessToken: API_KEY
 // }).addTo(mymap);
 var map = L.map("mapid", {
-  center: [34.05, -118.24],
-  zoom: 12,
+  center: [37.09, -95.71],
+  zoom: 3,
   // layers: [lightmap]
 });
 
