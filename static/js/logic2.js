@@ -61,25 +61,28 @@ d3.json(url_query, function(data){
   }
 }
 
-  var info = L.control({
+  var legend = L.control({
     position: "bottomright"
   });
   // When the layer control is added, insert a div with the class of "legend"
-  info.onAdd = function() {
+  legend.onAdd = function() {
     var div = L.DomUtil.create("div", "legend");
-    labels = ['<strong>Categories</strong>'],
-    categories = ['-10-10','10-30','30-50','50-70','70-90', '90+'];
-    for (var i = 0; i < categories.length; i++) {
-            div.innerHTML += 
-            labels.push(
-                '<i class="circle" style="background:' + getColor(categories[i] + 1) + '"></i> ' +
-                (categories[i] ? categories[i] : '+'));
+
+    var grades = [0,1,2,3,4,5]
+    var colors = ["#B9F09A","#B2E11E","#FFC300","#E16E1E","#E14A1E","#EE3416"]
+    
+    for (var i = 0; i < grades.length; i++) {
+
+            div.innerHTML +=
+              "<i style = 'background: " + colors[i] + "'></i> " +
+              grades[i] + (grades[i+1] ? "&ndash;" + grades[i+1] + "<br>" : "+");
+           
         }
-        div.innerHTML = labels.join('<br>');
+        
     return div;
 };
   // Add the info legend to the map
-  info.addTo(map);
+  legend.addTo(map);
   
   
 });
